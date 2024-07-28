@@ -1,0 +1,24 @@
+.update-icon {
+    width: 64px;
+    height: 64px;
+}
+
+.update-link {
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+
+.header h1 {
+    display: block;
+}
+
+.header a {
+    display: block;
+}
