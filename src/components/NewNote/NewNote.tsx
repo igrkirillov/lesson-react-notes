@@ -23,7 +23,7 @@ export const NewNote = (props: NewNoteProps) => {
     return (
         <form className={styles["form"]} ref={formRef} onSubmit={onSubmit}>
             <label htmlFor="note-text">New Note</label>
-            <textarea id="note-text" className={styles["note-text"]}/>
+            <textarea id="note-text" className={styles["note-text"]} required={true}/>
             <div className={styles["actions-container"]}>
                 <a className={styles["new-link"]} href="#" onClick={() => {formRef?.current?.requestSubmit(null)}}>
                     <img className={styles["new-icon"]} src={newnoteIcon} alt="new icon"/>

@@ -1,5 +1,5 @@
 .container {
-
+    position: relative;
 }
 
 .text {
@@ -10,4 +10,20 @@
     border-radius: 2px;
     text-align: left;
     padding: 2px;
+}
+
+.remove-link {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 38px;
+    height: 38px;
+    border: white 1px solid;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.remove-icon {
+    width: 32px;
+    height: 32px;
 }
