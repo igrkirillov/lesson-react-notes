@@ -22,6 +22,14 @@ function App() {
     const addNote = (note: Note) => {
         setAppState({...appState, notes: [...appState.notes, note]})
     }
+
+    const removeNote = (note: Note) => {
+        const foundIndex = appState.notes.findIndex(n => n.id == note.id);
+        if (foundIndex >= 0) {
+            setAppState({...appState, notes: appState.notes.splice(foundIndex, 1)})
+        }
+    }
+
     const reloadNotes = () => {
         setAppState({...appState, loading: true, notes: []})
         getNotes().then(notes => {
@@ -40,7 +48,7 @@ function App() {
             <Header reloadNotes={reloadNotes}></Header>
             {appState.loading
                 ? <div className="loading">Loading in progress...........</div>
-                : <Notes notes={appState.notes}></Notes>}
+                : <Notes notes={appState.notes} removeNote={removeNote}></Notes>}
             <NewNote addNote={addNote}></NewNote>
         </>
     )
