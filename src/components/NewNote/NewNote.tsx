@@ -1,6 +1,5 @@
 // @flow
-import * as React from 'react';
-import {FormEvent, useRef, MouseEvent} from 'react';
+import {FormEvent, useRef} from 'react';
 import styles from "./newnote.module.css"
 import newnoteIcon from "./newnote.png"
 import {Note} from "../../App";
@@ -12,7 +11,6 @@ export const NewNote = (props: NewNoteProps) => {
     const {addNote} = props;
     const formRef = useRef<HTMLFormElement>(null);
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-        console.log(event);
         event.preventDefault();
         addNote({
             text:  (event.currentTarget[0] as HTMLTextAreaElement).value,

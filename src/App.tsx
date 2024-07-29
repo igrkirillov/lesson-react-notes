@@ -5,7 +5,8 @@ import './App.css'
 import {Header} from "./components/Header";
 import {Notes} from "./components/Notes";
 import {NewNote} from "./components/NewNote";
-import {getNotes} from "./serverApi";
+import {deleteNote, getNotes, saveNote} from "./serverApi";
+import {Spinner} from "./components/Spinner";
 
 export type Note = {
     id: number | null
@@ -20,34 +21,44 @@ export type AppState = {
 function App() {
     const [appState, setAppState] = useState(getInitialAppState());
     const addNote = (note: Note) => {
-        setAppState({...appState, notes: [...appState.notes, note]})
+        setAppState({...appState, loading: true});
+        saveNote(note)
+            .then(() => {setAppState({...appState, notes: [...appState.notes, note]})})
+            .catch(getErrorHandler(appState, setAppState))
     }
 
     const removeNote = (note: Note) => {
         const foundIndex = appState.notes.findIndex(n => n.id == note.id);
         if (foundIndex >= 0) {
-            setAppState({...appState, notes: appState.notes.splice(foundIndex, 1)})
+            setAppState({...appState, loading: true});
+            deleteNote(note)
+                .then(() => {
+                    const newNotes: Note[] = [...appState.notes];
+                    newNotes.splice(foundIndex, 1);
+                    setAppState({...appState, notes: newNotes});
+                })
+                .catch(getErrorHandler(appState, setAppState))
         }
     }
 
     const reloadNotes = () => {
         setAppState({...appState, loading: true, notes: []})
-        getNotes().then(notes => {
-            setAppState({...appState, loading: false, notes: [...notes]})
-        }).catch(handleError)
+        getNotes()
+            .then(notes => {setAppState({...appState, loading: false, notes: [...notes]})})
+            .catch(getErrorHandler(appState, setAppState))
     }
 
     useEffect(() => {
         getNotes().then(notes => {
             setAppState({...appState, loading: false, notes: [...notes]})
-        }).catch(handleError)
+        }).catch(getErrorHandler(appState, setAppState))
     }, []) //component did mount
 
     return (
         <>
             <Header reloadNotes={reloadNotes}></Header>
             {appState.loading
-                ? <div className="loading">Loading in progress...........</div>
+                ? <Spinner></Spinner>
                 : <Notes notes={appState.notes} removeNote={removeNote}></Notes>}
             <NewNote addNote={addNote}></NewNote>
         </>
@@ -63,6 +74,10 @@ function getInitialAppState():AppState {
     }
 }
 
-function handleError(error: Error) {
-    alert(error);
+function getErrorHandler(appState: AppState, setAppState: (appState: AppState) => void) {
+    return (error: Error) => {
+        console.log(error);
+        alert(error);
+        setAppState({...appState, loading: false});
+    }
 }

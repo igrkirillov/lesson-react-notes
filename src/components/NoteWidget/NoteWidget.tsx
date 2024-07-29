@@ -1,5 +1,4 @@
 // @flow
-import * as React from 'react';
 import {Note} from "../../App";
 import styles from "./note.module.css"
 import removeIcon from "./remove.png";
